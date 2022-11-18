@@ -41,7 +41,7 @@ const Login = () => {
       minH="100vh"
       bg={useColorModeValue("gray.50", "gray.800")}
     >
-      <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
+      <Stack spacing={8} mx="auto" maxW="lg" py={12} px={6}>
         <Heading fontSize="4xl">Sign in to your account</Heading>
 
         <Box
@@ -96,8 +96,8 @@ const Login = () => {
                   type="submit"
                   value="submit"
                   size="lg"
-                  bg={"blue.400"}
-                  color={"white"}
+                  bg="blue.400"
+                  color="white"
                   _hover={{
                     bg: "blue.500",
                   }}

@@ -33,9 +33,8 @@ const Navbar = () => {
           </Heading>
         </Stack>
 
-        <Flex alignItems="center">
-          <HStack spacing="3">
-            {/* <Text fontSize="lg">Username</Text>
+        <Flex alignItems="center" gridColumnGap={4}>
+          {/* <Text fontSize="lg">Username</Text>
             <Menu>
               <MenuButton minW={0} rounded="full">
                 <Avatar size="sm" />
@@ -50,10 +49,9 @@ const Navbar = () => {
                 </MenuItem>
               </MenuList>
             </Menu> */}
-            <Link href="./login">
-              <Button>Login</Button>
-            </Link>
-          </HStack>
+          <Link href="./login">
+            <Button>Login</Button>
+          </Link>
         </Flex>
       </Flex>
     </Box>

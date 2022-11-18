@@ -37,7 +37,7 @@ export default function Home() {
         boxShadow="lg"
       >
         <TableContainer>
-          <Table alignContent="center" alignItems="center">
+          <Table>
             <Thead>
               <Tr>
                 <Th>No</Th>

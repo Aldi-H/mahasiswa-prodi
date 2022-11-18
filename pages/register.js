@@ -48,8 +48,10 @@ const Register = () => {
       minH="100vh"
       bg={useColorModeValue("gray.50", "gray.800")}
     >
-      <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
-        <Heading fontSize="4xl">Register an account</Heading>
+      <Stack spacing={8} mx="auto" minW="md" maxW="lg" py={12} px={6}>
+        <Heading textAlign="center" fontSize="4xl">
+          Register an account
+        </Heading>
 
         <Box
           rounded="lg"
@@ -155,8 +157,8 @@ const Register = () => {
                   type="submit"
                   value="submit"
                   size="lg"
-                  bg={"blue.400"}
-                  color={"white"}
+                  bg="blue.400"
+                  color="white"
                   _hover={{
                     bg: "blue.500",
                   }}
