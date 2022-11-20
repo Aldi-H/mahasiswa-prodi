@@ -1,13 +1,17 @@
 import { ChakraProvider } from "@chakra-ui/react";
+import { useState } from "react";
 
-import Navbar from "../components/navbar";
-// import "../styles/globals.css";
+import { AuthContext } from "../utils/AuthContext";
 
 function MyApp({ Component, pageProps }) {
+  const [token, setToken] = useState(null);
+
   return (
-    <ChakraProvider>
-      <Component {...pageProps} />
-    </ChakraProvider>
+    <AuthContext.Provider value={{token, setToken}}>
+      <ChakraProvider>
+        <Component {...pageProps} />
+      </ChakraProvider>
+    </AuthContext.Provider>
   );
 }
 

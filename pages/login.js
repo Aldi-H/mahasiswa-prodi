@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import {
   Box,
@@ -11,28 +11,60 @@ import {
   InputLeftElement,
   InputRightElement,
   Stack,
-  VStack,
   useColorModeValue,
-  FormLabel,
   Text,
   Link,
   Icon,
 } from "@chakra-ui/react";
 
 import { BiIdCard, BiLockAlt, BiShow, BiHide } from "react-icons/bi";
+import { AuthContext } from "../utils/AuthContext";
+import { useRouter } from "next/router";
+import backend from "../api/backend";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [nim, setNim] = useState("");
   const [password, setPassword] = useState("");
+  const { setToken } = useContext(AuthContext);
+
+  const router = useRouter();
 
   const handleShowPassword = () => setShowPassword(!showPassword);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("nim: ", nim);
-    console.log("password: ", password);
+
+    if (nim === "" || password === "") {
+      alert("NIM dan Password tidak boleh kosong");
+      return;
+    }
+
+    const user = {
+      nim,
+      password,
+    }
+
+    handleLogin(user);
   };
+
+  const handleLogin = async (user) => {
+    try {
+      const res = await backend.post('auth/login', user, {
+        validateStatus: false,
+      });
+
+      if (res.status !== 200) {
+        alert(res.data.message);
+        return;
+      }
+
+      setToken(res.data.token);
+      router.push('/');
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <Flex

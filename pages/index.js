@@ -1,6 +1,5 @@
 import {
   Box,
-  Container,
   Table,
   TableContainer,
   Thead,
@@ -14,11 +13,72 @@ import {
 
 import Navbar from "../components/navbar";
 
-import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
+import { useContext, useEffect, useState } from "react";
+import backend from "../api/backend";
+import { AuthContext } from "../utils/AuthContext";
 
 export default function Home() {
+  const [mahasiswas, setMahasiswas] = useState([]);
+  const [user, setUser] = useState(null);
+  const { token, setToken } = useContext(AuthContext);
+
+  const getAllMahasiswa = async () => {
+    try {
+      const res = await backend.get('/mahasiswa');
+      setMahasiswas(res.data.mahasiswa);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const getUserByToken = async () => {
+    try {
+      const res = await backend.get('/mahasiswa/profile', {
+        headers: {
+          token,
+          validateStatus: false,
+        },
+      })
+
+      if (res.status !== 200) {
+        alert(res.data.message);
+        return;
+      }
+
+      return setUser(res.data.mahasiswa);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleLogout = () => {
+    setToken(null);
+    setUser(null);
+  }
+
+  const handleDelete = async (nim) => {
+    try {
+      const res = await backend.delete(`/mahasiswa/${nim}`, {
+        headers: {
+          token,
+          validateStatus: false,
+        },
+      });
+
+      getAllMahasiswa();
+      handleLogout();
+      alert('mahasiswa deleted');
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+
+  useEffect(() => {
+    getAllMahasiswa();
+    getUserByToken();
+  }, [token])
+  
+
   return (
     <Box
       justify="center"
@@ -29,7 +89,7 @@ export default function Home() {
       pb={10}
       px={10}
     >
-      <Navbar />
+      <Navbar user={user} handleLogout={handleLogout} />
       <Box
         rounded="lg"
         bg={useColorModeValue("white", "gray.700")}
@@ -49,18 +109,20 @@ export default function Home() {
               </Tr>
             </Thead>
             <Tbody>
-              <Tr>
-                <Td>1</Td>
-                <Td>1909</Td>
-                <Td>Test User</Td>
-                <Td>2019</Td>
-                <Td>Teknologi Informasi</Td>
-                <Td>
-                  <Button size="sm" colorScheme="red">
-                    Delete
-                  </Button>
-                </Td>
-              </Tr>
+              {mahasiswas && mahasiswas.map((mahasiswa, index) => (
+                <Tr key={mahasiswa.nim}>
+                  <Td>{index + 1}</Td>
+                  <Td>{mahasiswa.nim}</Td>
+                  <Td>{mahasiswa.nama}</Td>
+                  <Td>{mahasiswa.angkatan}</Td>
+                  <Td>{mahasiswa.prodi.nama}</Td>
+                  <Td>
+                    <Button size="sm" colorScheme="red" onClick={() => handleDelete(mahasiswa.nim)}>
+                      Delete
+                    </Button>
+                  </Td>
+                </Tr>
+              ))}
             </Tbody>
           </Table>
         </TableContainer>
