@@ -15,7 +15,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-const Navbar = ({ user }) => {
+const Navbar = ({ user, handleLogout }) => {
   return (
     <Box px={10}>
       <Flex my={5} h={16} alignItems="center" justifyContent="space-between">
@@ -38,7 +38,7 @@ const Navbar = ({ user }) => {
                   <Avatar size="sm" />
                 </MenuButton>
                 <MenuList>
-                  <MenuItem>Logout</MenuItem>
+                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </MenuList>
               </Menu>
             </>

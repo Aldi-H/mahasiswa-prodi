@@ -24,7 +24,7 @@ import { AuthContext } from "../utils/AuthContext";
 export default function Home() {
   const [mahasiswas, setMahasiswas] = useState([]);
   const [user, setUser] = useState(null);
-  const { token } = useContext(AuthContext);
+  const { token, setToken } = useContext(AuthContext);
 
   const getAllMahasiswa = async () => {
     try {
@@ -56,6 +56,11 @@ export default function Home() {
     }
   }
 
+  const handleLogout = () => {
+    setToken(null);
+    setUser(null);
+  }
+
   useEffect(() => {
     getAllMahasiswa();
     getUserByToken();
@@ -72,7 +77,7 @@ export default function Home() {
       pb={10}
       px={10}
     >
-      <Navbar user={user} />
+      <Navbar user={user} handleLogout={handleLogout} />
       <Box
         rounded="lg"
         bg={useColorModeValue("white", "gray.700")}
