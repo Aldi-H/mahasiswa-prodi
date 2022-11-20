@@ -17,8 +17,27 @@ import Navbar from "../components/navbar";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
+import { useEffect, useState } from "react";
+import backend from "../api/backend";
 
 export default function Home() {
+  const [mahasiswas, setMahasiswas] = useState([]);
+
+  const getAllMahasiswa = async () => {
+    try {
+      const res = await backend.get('/mahasiswa');
+      console.log(res.data.mahasiswa);
+      setMahasiswas(res.data.mahasiswa);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getAllMahasiswa();
+  }, [])
+  
+
   return (
     <Box
       justify="center"
@@ -49,18 +68,20 @@ export default function Home() {
               </Tr>
             </Thead>
             <Tbody>
-              <Tr>
-                <Td>1</Td>
-                <Td>1909</Td>
-                <Td>Test User</Td>
-                <Td>2019</Td>
-                <Td>Teknologi Informasi</Td>
-                <Td>
-                  <Button size="sm" colorScheme="red">
-                    Delete
-                  </Button>
-                </Td>
-              </Tr>
+              {mahasiswas && mahasiswas.map((mahasiswa, index) => (
+                <Tr key={mahasiswa.nim}>
+                  <Td>{index + 1}</Td>
+                  <Td>{mahasiswa.nim}</Td>
+                  <Td>{mahasiswa.nama}</Td>
+                  <Td>{mahasiswa.angkatan}</Td>
+                  <Td>{mahasiswa.prodi.nama}</Td>
+                  <Td>
+                    <Button size="sm" colorScheme="red">
+                      Delete
+                    </Button>
+                  </Td>
+                </Tr>
+              ))}
             </Tbody>
           </Table>
         </TableContainer>
