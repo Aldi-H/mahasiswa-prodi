@@ -17,11 +17,14 @@ import Navbar from "../components/navbar";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import backend from "../api/backend";
+import { AuthContext } from "../utils/AuthContext";
 
 export default function Home() {
   const [mahasiswas, setMahasiswas] = useState([]);
+  const [user, setUser] = useState(null);
+  const { token } = useContext(AuthContext);
 
   const getAllMahasiswa = async () => {
     try {
@@ -33,9 +36,30 @@ export default function Home() {
     }
   }
 
+  const getUserByToken = async () => {
+    try {
+      const res = await backend.get('/mahasiswa/profile', {
+        headers: {
+          token,
+          validateStatus: false,
+        },
+      })
+
+      if (res.status !== 200) {
+        alert(res.data.message);
+        return;
+      }
+
+      return setUser(res.data.mahasiswa);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   useEffect(() => {
     getAllMahasiswa();
-  }, [])
+    getUserByToken();
+  }, [token])
   
 
   return (
@@ -48,7 +72,7 @@ export default function Home() {
       pb={10}
       px={10}
     >
-      <Navbar />
+      <Navbar user={user} />
       <Box
         rounded="lg"
         bg={useColorModeValue("white", "gray.700")}

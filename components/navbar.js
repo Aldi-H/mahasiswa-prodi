@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import {
   Avatar,
   Box,
@@ -17,9 +15,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-const Navbar = () => {
-  const [login, setLogin] = useState(false);
-
+const Navbar = ({ user }) => {
   return (
     <Box px={10}>
       <Flex my={5} h={16} alignItems="center" justifyContent="space-between">
@@ -34,24 +30,23 @@ const Navbar = () => {
         </Stack>
 
         <Flex alignItems="center" gridColumnGap={4}>
-          {/* <Text fontSize="lg">Username</Text>
-            <Menu>
-              <MenuButton minW={0} rounded="full">
-                <Avatar size="sm" />
-              </MenuButton>
-              <MenuList>
-                <MenuItem
-                  onClick={() => {
-                    alert("log out");
-                  }}
-                >
-                  Logout
-                </MenuItem>
-              </MenuList>
-            </Menu> */}
-          <Link href="./login">
-            <Button>Login</Button>
-          </Link>
+          {user ? (
+            <>
+              <Text fontSize="lg">{user.nama}</Text>
+              <Menu m={0}>
+                <MenuButton minW={0} rounded="full">
+                  <Avatar size="sm" />
+                </MenuButton>
+                <MenuList>
+                  <MenuItem>Logout</MenuItem>
+                </MenuList>
+              </Menu>
+            </>
+          ) : (
+            <Link href="./login">
+              <Button>Login</Button>
+            </Link>
+          )}
         </Flex>
       </Flex>
     </Box>
