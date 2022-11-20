@@ -1,6 +1,5 @@
 import {
   Box,
-  Container,
   Table,
   TableContainer,
   Thead,
@@ -14,9 +13,6 @@ import {
 
 import Navbar from "../components/navbar";
 
-import Head from "next/head";
-import Image from "next/image";
-import styles from "../styles/Home.module.css";
 import { useContext, useEffect, useState } from "react";
 import backend from "../api/backend";
 import { AuthContext } from "../utils/AuthContext";
@@ -29,7 +25,6 @@ export default function Home() {
   const getAllMahasiswa = async () => {
     try {
       const res = await backend.get('/mahasiswa');
-      console.log(res.data.mahasiswa);
       setMahasiswas(res.data.mahasiswa);
     } catch (error) {
       console.log(error);
