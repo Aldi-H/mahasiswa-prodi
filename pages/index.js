@@ -61,6 +61,23 @@ export default function Home() {
     setUser(null);
   }
 
+  const handleDelete = async (nim) => {
+    try {
+      const res = await backend.delete(`/mahasiswa/${nim}`, {
+        headers: {
+          token,
+          validateStatus: false,
+        },
+      });
+
+      getAllMahasiswa();
+      handleLogout();
+      alert('mahasiswa deleted');
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+
   useEffect(() => {
     getAllMahasiswa();
     getUserByToken();
@@ -105,7 +122,7 @@ export default function Home() {
                   <Td>{mahasiswa.angkatan}</Td>
                   <Td>{mahasiswa.prodi.nama}</Td>
                   <Td>
-                    <Button size="sm" colorScheme="red">
+                    <Button size="sm" colorScheme="red" onClick={() => handleDelete(mahasiswa.nim)}>
                       Delete
                     </Button>
                   </Td>
